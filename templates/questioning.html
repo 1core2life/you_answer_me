@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+
+        {% include 'head.html' %}
+
+    </head>
+
+    <body class="text-center ">
+        <div class="form-signin">
+            <h1 class="mb-3 font-weight-normal">질문 작성</h1>
+
+            <div id="content">
+
+            </div>
+
+            
+            <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="return endQuestioning();">완료</button>
+        </div>
+    </body>
+
+
+    <script>
+        var res = [];
+        var questions =  "{{ questions }}";
+        var name =  "{{ name }}";
+
+        $.ajax({
+            type: 'POST',
+            url: '/questionCard',
+            data: {'questions': questions},
+            success: function(res){
+                $("#content").html(res);
+
+                addListener();
+            }
+        });
+
+        function endQuestioning(){
+            $.ajax({
+                type: 'POST',
+                url: '/question/new',
+                data: {'res': JSON.stringify(res), 'name': name},
+                success: function(res){
+                    window.location.href='/share/' + res["user_idx"];
+                    return false;
+                }
+            });
+        }
+
+
+        function addListener(){
+            $(".btn-group-vertical").on("change", function(){
+                var id = this.id;
+                for(var idx = 0; idx < res.length ; idx++){
+                    if(res[idx]["question_idx"] == id) {
+                        if (idx > -1) {
+                            res.splice(idx, 1);
+                            break;
+                        }
+                    }
+                }
+                res.push({"question_idx": id, "answer":$('input[name="jb-radio"]:checked', '.btn-group-vertical').val()});
+            });
+        }
+        
+
+        
+
+    </script>
+
+</html>

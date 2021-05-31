@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+      
+        {% include 'head.html' %}
+
+    </head>
+
+    <body class="text-center">
+        <div class="form-signin">
+            <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h1 class="mb-3 font-weight-normal">You Answer Me</h1>
+
+            <div class="container" style="margin-bottom:50px; margin-top:50px;">
+                <p>
+                    친구에게 아래 링크를 공유하세요!
+                </p>
+            </div>
+            <input type="text" value="test" id="CopyThis" onclick="copy();" style = "text-align:center;"
+             readonly>
+            <p class="mt-5 mb-3 text-muted">&copy; 2021 I'm back</p>
+        </div>
+    </body>
+
+
+    <script>
+        document.getElementById("CopyThis").value = getLink();
+
+        function getLink(){
+            var text    = location.href.split('/');
+
+            var userIdx = text.pop() ;
+            text.pop() ;
+            var hostname = text.pop() ;
+            
+            return hostname + "/answering/" + userIdx;
+        }
+        function copy() {
+            var dummy   = document.createElement("input");
+            document.body.appendChild(dummy);
+            dummy.value = getLink();
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+        }
+    </script>
+
+</html>

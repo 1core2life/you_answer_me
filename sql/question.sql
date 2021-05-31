@@ -1,0 +1,6 @@
+
+use USER;
+ 
+CREATE TABLE question(
+    idx    INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    content    VARCHAR(100) NOT NULL) CHARSET=utf8;

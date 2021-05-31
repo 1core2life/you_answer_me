@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+
+        {% include 'head.html' %}
+
+    </head>
+
+    <body class="text-center">
+        <div class="form-signin">
+            <h1 class="mb-3 font-weight-normal">답변 작성</h1>
+            <p>
+                나는 {{ name }}를 얼마나 잘 알고 있을까요?
+            </p>
+
+
+            <div id="content">
+
+            </div>
+
+
+            <div style="margin:50px;">
+                <input type="email" id="challenger" placeholder="제출자"  style="text-align:center;" required autofocus>
+            </div>
+            
+            
+            <button class="btn btn-lg btn-primary btn-block" onclick="return endAnswering();">제출</button>
+            
+        </div>
+    </body>
+
+
+    <script>
+        var res = [];
+
+        var user_idx = '{{ user_idx }}';
+
+        $.ajax({
+            type: 'POST',
+            url: '/answerCard',
+            data: {'user_idx': user_idx},
+            success: function(res){
+                $("#content").html(res);
+
+                addListener();
+            }
+        });
+
+
+
+        function addListener(){
+            $(".btn-group-vertical").on("change", function(){
+                var id = this.id;
+                for(var idx = 0; idx < res.length ; idx++){
+                    if(res[idx]["question_idx"] == id) {
+                        if (idx > -1) {
+                            res.splice(idx, 1);
+                            break;
+                        }
+                    }
+                }
+                res.push({"question_idx": id, "answer":$('input[name="jb-radio"]:checked', '.btn-group-vertical').val()});
+            });
+        }
+        
+
+        function endAnswering(){
+            $.ajax({
+                type: 'POST',
+                url: '/answer/new',
+                data: {'res': JSON.stringify(res), 'name': $("#challenger").val(), 'user_idx':user_idx},
+                success: function(res){
+                    window.location.href='/result/' + user_idx;
+                    return false;
+                }
+            });
+            
+        }
+
+    </script>
+
+</html>

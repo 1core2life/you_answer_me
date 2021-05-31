@@ -1,0 +1,22 @@
+
+{% for result in result_list %}
+
+    <div class="container" style="margin-bottom:50px; margin-top:50px;">
+        <div class="column">
+            <p>Q. {{ result['question_content'] | safe }} </p>
+        </div>
+
+        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons" id="q_{{ result['question_idx'] | safe }}">
+            <label class="btn btn-primary">
+                <input type="radio" name="jb-radio"  value="0"> {{ result['answer_0'] | safe }}
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="jb-radio" value="1"> {{ result['answer_1'] | safe }}
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="jb-radio" value="2"> {{ result['answer_2'] | safe }}
+            </label>
+        </div>
+    </div>
+
+{% endfor %}
