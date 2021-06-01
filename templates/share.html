@@ -18,6 +18,9 @@
             </div>
             <input type="text"value="test" id="CopyThis" onclick="this.select();" style = "text-align:center;"
              readonly>
+            <div class="container" style="margin-top: 50px;">
+                <a href="#" id="result">결과 보기</a>
+            </div>
             <p class="mt-5 mb-3 text-muted">&copy; 2021 I'm back</p>
         </div>
     </body>
@@ -25,6 +28,7 @@
 
     <script>
         document.getElementById("CopyThis").value = getLink();
+        document.getElementById("result").href = getResultLink();
 
         function getLink(){
             var text    = location.href.split('/');
@@ -34,6 +38,16 @@
             var hostname = text.pop() ;
             
             return hostname + "/answering/" + userIdx;
+        }
+
+        function getResultLink(){
+            var text    = location.href.split('/');
+
+            var userIdx = text.pop() ;
+            text.pop() ;
+            var hostname = text.pop() ;
+            
+            return "http://" + hostname + "/result/" + userIdx;
         }
         
     </script>
