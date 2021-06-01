@@ -206,6 +206,34 @@ def admin_question():
     return render_template("/admin/new_question.html")
 
 
+@app.route("/admin/question/all/get", methods=['POST'])
+def admin_get_all_question():
+    questions = Question().select_all()
+    
+    result = list()
+
+    for question in questions:
+        formatted_questions = dict()
+        formatted_questions["question_content"] = question["content"]
+        
+        question_idx = question["idx"]
+        formatted_questions["question_idx"] = question_idx
+
+
+        answers = QuestionAnswer().select(question_idx)
+        for idx in range(0, MAX_ANSWER_LEN):
+            formatted_questions["answer_" + str(idx)] = answers[idx]["content"]
+        
+        result.append(formatted_questions)
+
+    return render_template("question_card.html", result_list=result, answer=False)
+
+
+@app.route("/admin/question/all")
+def admin_all_question():
+    return render_template("/admin/all_question.html")
+
+
 
 
 if __name__ == '__main__':

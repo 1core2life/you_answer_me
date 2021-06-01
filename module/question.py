@@ -5,6 +5,11 @@ class Question:
     def __init__(self):
         self.db_class = DBModule.Database("USER")
 
+    def select_all(self):
+        sql = "select * from question"        
+        row = self.db_class.executeAll(sql)
+        
+        return row
 
     def select(self, idx):
         sql = "select * from question where idx = %s "        
