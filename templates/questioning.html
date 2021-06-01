@@ -37,15 +37,21 @@
         });
 
         function endQuestioning(){
-            $.ajax({
-                type: 'POST',
-                url: '/userQuestion/new',
-                data: {'res': JSON.stringify(res), 'name': name},
-                success: function(res){
-                    window.location.href='/share/' + res["code"];
-                    return false;
-                }
-            });
+            if(res.length <= 4){
+                alert("5개 이상의 답변을 하세요!");
+                return;
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: '/userQuestion/new',
+                    data: {'res': JSON.stringify(res), 'name': name},
+                    success: function(res){
+                        window.location.href='/share/' + res["code"];
+                        return false;
+                    }
+                });
+            }
         }
 
 
