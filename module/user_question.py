@@ -6,8 +6,8 @@ class UserQuestion:
         self.db_class = DBModule.Database("USER")
 
 
-    def select_question_idx(self, user_idx):
-        sql = "select question_idx from user_question where user_idx = %s "        
+    def select(self, user_idx):
+        sql = "select * from user_question where user_idx = %s "        
         row = self.db_class.executeAll(sql,(user_idx))
         
         return row

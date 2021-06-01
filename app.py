@@ -1,5 +1,5 @@
 
-from flask import Flask, jsonify, request, render_template, redirect, url_for, session
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 import os
 from module.question import Question
 from module.challenger import Challenger
@@ -14,12 +14,12 @@ import json
 
 
 app = Flask(__name__,  static_url_path='/static')
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 MAX_ANSWER_LEN = 3
 
 @app.route("/new")
+@app.route("/")
 def main():
     return render_template("new.html")
 
@@ -28,9 +28,11 @@ def questioning(name):
     max_length = int((Question().get_max_length())["cnt"])
     selected_question_list = list() 
     for num in range(0, int(max_length/2)):
-        random_num = random.randrange(1, max_length + 1)
-        if random_num not in selected_question_list:
-            selected_question_list.append(random_num)
+        while(True):
+            random_num = random.randrange(1, max_length + 1)
+            if random_num not in selected_question_list:
+                selected_question_list.append(random_num)
+                break
 
 
     return render_template("questioning.html", name=name, questions=selected_question_list)
@@ -58,30 +60,33 @@ def question_card():
 
 
 
-@app.route("/question/new", methods=['POST'])
-def new_question():
+@app.route("/userQuestion/new", methods=['POST'])
+def new_user_question():
     res = request.form["res"]
     name = request.form["name"]
     user_idx = User().insert(name)
     res = json.loads(res)
+
     for re in res:
         question_idx = re["question_idx"].split('_')[-1]
         UserQuestion().insert(question_idx, user_idx, re["answer"])
     
-    return jsonify({'user_idx':user_idx}), 200
+    user = User().select(user_idx)
+    
+    return jsonify({'code':user["code"]}), 200
 
 
-@app.route("/share/<user_idx>")
-def share(user_idx):
+@app.route("/share/<code>")
+def share(code):
     return render_template("share.html")
 
 
 
-@app.route("/answering/<user_idx>")
-def answering(user_idx):
-    user = User().select(user_idx)
+@app.route("/answering/<code>")
+def answering(code):
+    user = User().select_code(code)
 
-    return render_template("answering.html", user_idx=user_idx, name=user["name"])
+    return render_template("answering.html", user_idx=user["idx"], name=user["name"], code=code)
 
 
 @app.route("/answer/new", methods=['POST'])
@@ -99,7 +104,6 @@ def new_answer():
             score = score + 1
         
     challenger_idx = Challenger().insert(user_idx, name, score)
-    # session['challenger_idx'] = challenger_idx
     
     return jsonify(None), 200
 
@@ -109,7 +113,7 @@ def answer_card():
     user_idx = request.form["user_idx"]
     result = list()
 
-    questions = UserQuestion().select_question_idx(user_idx)
+    questions = UserQuestion().select(user_idx)
     for question in questions:
         question = question["question_idx"]
         formatted_questions = dict()
@@ -124,15 +128,47 @@ def answer_card():
         
         result.append(formatted_questions)
 
-    return render_template("question_card.html", result_list=result)
+    return render_template("question_card.html", result_list=result, answer=False)
 
 
-@app.route("/result/<user_idx>")
-def result(user_idx):
+@app.route("/userQuestion/answer/<code>", methods=['POST'])
+def get_answer_user_question(code):
+    user = User().select_code(code)
+    user_idx = user["idx"]
+
+    result = list()
+
+    questions = UserQuestion().select(user_idx)
+    for question in questions:
+        formatted_questions = dict()
+        formatted_questions["correct_answer"] = question["answer"]
+
+        question = question["question_idx"]
+        formatted_questions["question_idx"] = question
+
+        q = Question().select(question)
+        formatted_questions["question_content"] = q["content"]
+
+
+        answers = QuestionAnswer().select(question)
+        for idx in range(0, MAX_ANSWER_LEN):
+            formatted_questions["answer_" + str(idx)] = answers[idx]["content"]
+        
+        result.append(formatted_questions)
+
+    
+    return render_template("question_card.html", result_list=result, answer=True)
+
+
+@app.route("/result/<code>")
+def result(code):
+    user = User().select_code(code)
+    user_idx = user["idx"]
+
     challenger_list = Challenger().select_all(user_idx)
     sorted_challenger_list = sorted(challenger_list, key=lambda k: k['score'], reverse=True) 
 
-    questions = UserQuestion().select_question_idx(user_idx)
+    questions = UserQuestion().select(user_idx)
     question_len = len(questions)
     
     return render_template("result.html", result_list=sorted_challenger_list, question_len=question_len)
@@ -140,20 +176,37 @@ def result(user_idx):
 
 @app.route("/result/<user_idx>/comment/new")
 def new_comment(user_idx):
-    challenger_idx = session['challenger_idx']
-    comment = request.form["comment"]
-    Challenger().insert_comment(user_idx, challenger_idx, comment)
+    # challenger_idx = session['challenger_idx']
+    # comment = request.form["comment"]
+    # Challenger().insert_comment(user_idx, challenger_idx, comment)
 
     return jsonify(None), 200
 
 
 
 
+# admin
+@app.route("/admin/question/new", methods=['POST'])
+def admin_new_question():
+    question = request.form["question"]
+    answer_0 = request.form["answer_0"]
+    answer_1 = request.form["answer_1"]
+    answer_2 = request.form["answer_2"]
 
-@app.before_request
-def make_session_permanent():
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=5)
+    question_idx = Question().insert(question)
+    QuestionAnswer().insert(question_idx, answer_0)
+    QuestionAnswer().insert(question_idx, answer_1)
+    QuestionAnswer().insert(question_idx, answer_2)
+    
+    return jsonify(None), 200
+
+
+@app.route("/admin/question")
+def admin_question():
+    return render_template("/admin/new_question.html")
+
+
+
 
 if __name__ == '__main__':
     app.debug = True

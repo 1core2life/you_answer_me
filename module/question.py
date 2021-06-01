@@ -16,8 +16,10 @@ class Question:
     def insert(self, content):
         sql = "INSERT INTO question(content) VALUES(%s)"
 
-        self.db_class.execute(sql, (name))
+        idx = self.db_class.execute(sql, (content))
         self.db_class.commit()
+
+        return idx
         
 
     def get_max_length(self):

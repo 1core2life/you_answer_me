@@ -39,10 +39,10 @@
         function endQuestioning(){
             $.ajax({
                 type: 'POST',
-                url: '/question/new',
+                url: '/userQuestion/new',
                 data: {'res': JSON.stringify(res), 'name': name},
                 success: function(res){
-                    window.location.href='/share/' + res["user_idx"];
+                    window.location.href='/share/' + res["code"];
                     return false;
                 }
             });
