@@ -9,11 +9,18 @@
     <body class="text-center ">
         <div class="form-signin">
             <h1 class="mb-3 font-weight-normal">질문 작성</h1>
-
+            <p>
+                나에게 해당하는 답변을 선택해주세요.
+            </p>
+            <p>
+                원하지 않는 답변은 넘어가실 수 있어요!
+            </p>
             <div id="content">
 
             </div>
 
+            <div class="container mb-3" id="result">
+            </div>
             
             <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="return endQuestioning();">완료</button>
         </div>
@@ -31,6 +38,7 @@
             data: {'questions': questions},
             success: function(res){
                 $("#content").html(res);
+                $('#result').text('0/' + $('.btn-group-vertical').length + '개');
 
                 addListener();
             }
@@ -67,6 +75,7 @@
                     }
                 }
                 res.push({"question_idx": id, "answer":$('input[name="jb-radio"]:checked', '.btn-group-vertical').val()});
+                $('#result').text(res.length + '/' + $('.btn-group-vertical').length + '개');
             });
         }
         
