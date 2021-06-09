@@ -13,6 +13,13 @@ class QuestionAnswer:
         return row
 
 
+    def update(self, idx, content):
+        sql = "UPDATE question_answer set content = %s where question_idx = %s"
+
+        self.db_class.execute(sql, (content, idx))
+        self.db_class.commit()
+
+
     def insert(self, question_idx, content):
         sql = "INSERT INTO question_answer(question_idx, content) VALUES(%s, %s)"
 

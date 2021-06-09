@@ -201,9 +201,30 @@ def admin_new_question():
     return jsonify(None), 200
 
 
-@app.route("/admin/question")
-def admin_question():
+@app.route("/admin/question/update", methods=['POST'])
+def admin_update_question():
+    question_idx = request.form["question_idx"]
+    question = request.form["question"]
+    answer_0 = request.form["answer_0"]
+    answer_1 = request.form["answer_1"]
+    answer_2 = request.form["answer_2"]
+
+    Question().update(question_idx, question)
+    QuestionAnswer().update(question_idx, answer_0)
+    QuestionAnswer().update(question_idx, answer_1)
+    QuestionAnswer().update(question_idx, answer_2)
+    
+    return jsonify(None), 200
+
+
+@app.route("/admin/question/new/page")
+def admin_question_new_page():
     return render_template("/admin/new_question.html")
+
+
+@app.route("/admin/question/update/page")
+def admin_question_update_page():
+    return render_template("/admin/update_question.html")
 
 
 @app.route("/admin/question/all/get", methods=['POST'])

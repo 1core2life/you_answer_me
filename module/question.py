@@ -27,6 +27,13 @@ class Question:
         return idx
         
 
+    def update(self, idx, content):
+        sql = "UPDATE question set content = %s where idx = %s"
+
+        self.db_class.execute(sql, (content, idx))
+        self.db_class.commit()
+        
+
     def get_max_length(self):
         sql = "SELECT COUNT(*)  as cnt FROM question"        
         row = self.db_class.executeOne(sql)

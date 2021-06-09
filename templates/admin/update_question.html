@@ -9,10 +9,13 @@
     <body class="text-center">
         <div class="form-signin">
             <img class="mb-4" src="/static/laugh.png" alt="" width="72" height="72">
-            <h1 class="mb-3 font-weight-normal">새 생성</h1>
+            <h1 class="mb-3 font-weight-normal">업데이트</h1>
 
 
             <div class="column align-items-center" style="margin-bottom:50px;">
+                <div class="p-2">
+                    <textarea style="resize: none;" class="form-control" rows="1" id="question_idx"></textarea>
+                </div>
                 <div class="p-2">
                     <textarea style="resize: none;" class="form-control" rows="1" id="question"></textarea>
                 </div>
@@ -26,7 +29,7 @@
                     <textarea style="resize: none;" class="form-control" rows="1" id="answer_2"></textarea>
                 </div>
                 <div class="p-2">
-                    <button class="btn btn-primary" onclick="return addQuestion();" >작성</button>
+                    <button class="btn btn-primary" onclick="return updateQuestion();" >작성</button>
                 </div>
             </div>
               
@@ -36,7 +39,8 @@
 
 
     <script>
-        function addQuestion(){
+        function updateQuestion(){
+            var question_idx = $('#question_idx').val();
             var question = $('#question').val();
             var answer_0 = $('#answer_0').val();
             var answer_1 = $('#answer_1').val();
@@ -48,8 +52,8 @@
             else{   
                 $.ajax({
                     type: 'POST',
-                    url: '/admin/question/new',
-                    data: {'question': question, 'answer_0': answer_0,
+                    url: '/admin/question/update',
+                    data: { 'question_idx':question_idx, 'question': question, 'answer_0': answer_0,
                             'answer_1': answer_1,'answer_2': answer_2},
                     success: function(res){
                         alert("성공");
