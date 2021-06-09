@@ -14,7 +14,7 @@ class QuestionAnswer:
 
 
     def update(self, idx, content):
-        sql = "UPDATE question_answer set content = %s where question_idx = %s"
+        sql = "UPDATE question_answer set content = %s where idx = %s"
 
         self.db_class.execute(sql, (content, idx))
         self.db_class.commit()

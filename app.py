@@ -210,9 +210,11 @@ def admin_update_question():
     answer_2 = request.form["answer_2"]
 
     Question().update(question_idx, question)
-    QuestionAnswer().update(question_idx, answer_0)
-    QuestionAnswer().update(question_idx, answer_1)
-    QuestionAnswer().update(question_idx, answer_2)
+
+    answers = QuestionAnswer().select(question_idx)
+    QuestionAnswer().update(answers[0]["idx"], answer_0)
+    QuestionAnswer().update(answers[1]["idx"], answer_1)
+    QuestionAnswer().update(answers[2]["idx"], answer_2)
     
     return jsonify(None), 200
 
