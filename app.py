@@ -249,7 +249,7 @@ def admin_get_all_question():
         
         result.append(formatted_questions)
 
-    return render_template("question_card.html", result_list=result, answer=False)
+    return render_template("/admin/question_card.html", result_list=result)
 
 
 @app.route("/admin/question/all")
