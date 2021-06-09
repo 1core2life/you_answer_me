@@ -17,6 +17,7 @@ app = Flask(__name__,  static_url_path='/static')
 
 
 MAX_ANSWER_LEN = 3
+MAX_QUESTION_LEN = 20
 
 @app.route("/new")
 @app.route("/")
@@ -27,7 +28,7 @@ def main():
 def questioning(name):
     max_length = int((Question().get_max_length())["cnt"])
     selected_question_list = list() 
-    for num in range(0, int(max_length/2)):
+    for num in range(0, MAX_QUESTION_LEN):
         while(True):
             random_num = random.randrange(1, max_length + 1)
             if random_num not in selected_question_list:
