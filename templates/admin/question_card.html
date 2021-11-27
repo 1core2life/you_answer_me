@@ -3,7 +3,7 @@
 
     <div class="container" style="margin-bottom:50px; margin-top:50px;">
         <div class="column">
-            <p>Q. {{ result['question_content'] | safe }} / {{ result['question_idx'] | safe }} </p>
+            <p style="color:white;">Q. {{ result['question_content'] | safe }} / {{ result['question_idx'] | safe }} </p>
 
             <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons" id="q_{{ result['question_idx'] | safe }}">
                 <label class="btn btn-primary">

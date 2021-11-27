@@ -6,36 +6,40 @@
 
     </head>
 
-    <body class="text-center">
-        <div class="form-signin">
-            <img class="mb-4" src="/static/laugh.png" alt="" width="72" height="72">
-            <h1 class="mb-3 font-weight-normal">새 생성</h1>
+    <body class="text-center bg">
+        <div class="form-signin"  style="margin-top:150px;">
+            <h1 class="mb-3 font-weight-normal" style="color:white; margin-top:50px">질문 생성하기</h1>
 
 
             <div class="column align-items-center" style="margin-bottom:50px;">
                 <div class="p-2">
-                    <textarea style="resize: none;" class="form-control" rows="1" id="question"></textarea>
+                    <textarea style="resize: none;" class="form-control" rows="1" id="question" placeholder="질문"></textarea>
                 </div>
                 <div class="p-2">
-                    <textarea style="resize: none;" class="form-control" rows="1" id="answer_0"></textarea>
+                    <textarea style="resize: none;" class="form-control" rows="1" id="answer_0" placeholder="정답"></textarea>
                 </div>
                 <div class="p-2">
-                    <textarea style="resize: none;" class="form-control" rows="1" id="answer_1"></textarea>
+                    <textarea style="resize: none;" class="form-control" rows="1" id="answer_1" placeholder="오답1"></textarea>
                 </div>
                 <div class="p-2">
-                    <textarea style="resize: none;" class="form-control" rows="1" id="answer_2"></textarea>
+                    <textarea style="resize: none;" class="form-control" rows="1" id="answer_2" placeholder="오답2"></textarea>
                 </div>
                 <div class="p-2">
                     <button class="btn btn-primary" onclick="return addQuestion();" >작성</button>
+                    <button class="btn btn-primary" onclick="return passUrl();" >문제 풀이</button>
+
                 </div>
             </div>
-              
             <p class="mt-5 mb-3 text-muted">&copy; 2021 I'm back</p>
         </div>
     </body>
 
 
     <script>
+        function passUrl(){
+            window.location.href='/answering/379h13#';
+        }
+        
         function addQuestion(){
             var question = $('#question').val();
             var answer_0 = $('#answer_0').val();

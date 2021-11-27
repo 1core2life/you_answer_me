@@ -6,29 +6,17 @@
 
     </head>
 
-    <body class="text-center">
-        <div class="form-signin">
-            <img class="mb-4" src="/static/laugh.png" alt="" width="72" height="72">
-            <h1 class="mb-3 font-weight-normal">You Answer Me</h1>
-            <p>
-                내 친구는 나를 얼마나 잘 알고 있을까요?
+    <body class="text-center bg">
+        <div class="form-signin" style="margin-top:20%">
+            <h1 class="mb-3 font-weight-normal" style="color:white;">퀴즈 온 삼국지</h1>
+            <p style="color:white;">
+                삼국지 퀴즈를 통해, 자웅을 겨뤄라!
             </p>
 
             <div style="margin-bottom:50px;">
 
-                <input type="email" id="name" placeholder="이름" style="text-align:center;" required autofocus>
 
             </div>
-
-            <div class="ad">
-                <ins class="kakao_ad_area" style="display:none;" 
-                    data-ad-unit    = "DAN-cJnImzqaxWihWDl7" 
-                    data-ad-width   = "320" 
-                    data-ad-height  = "50">
-                </ins> 
-                <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-            </div>
-
             
             <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="startQuestioning();">문제 내기</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2021 I'm back</p>
@@ -38,13 +26,7 @@
 
     <script>
         function startQuestioning(){
-            if($("#name").val().length == 0){
-                alert("이름을 입력하세요!");
-                return;
-            }
-            else{
-                window.location.href='/questioning/' + $("#name").val();
-            }
+            window.location.href='/admin/question/new/page';
         }
 
     </script>

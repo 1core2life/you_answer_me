@@ -17,7 +17,7 @@ app = Flask(__name__,  static_url_path='/static')
 
 
 MAX_ANSWER_LEN = 3
-MAX_QUESTION_LEN = 20
+MAX_QUESTION_LEN = 10
 
 @app.route("/new")
 @app.route("/")
@@ -34,7 +34,6 @@ def questioning(name):
             if random_num not in selected_question_list:
                 selected_question_list.append(random_num)
                 break
-
 
     return render_template("questioning.html", name=name, questions=selected_question_list)
 

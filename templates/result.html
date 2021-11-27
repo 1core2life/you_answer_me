@@ -6,38 +6,29 @@
 
     </head>
 
-    <body class="text-center">
+    <body class="text-center bg">
         <div class="form-signin">
             <img class="mb-4" src="/static/laugh.png" alt="" width="72" height="72">
-            <h1 class="mb-3 font-weight-normal">You Answer Me</h1>
+            <h1 class="mb-3 font-weight-normal">퀴즈 더 삼국</h1>
             <p>
-                현재 결과를 아래에서 확인하세요!
+                나의 등수를 확인하세요!
             </p>
-
-            <div class="ad">
-                <ins class="kakao_ad_area" style="display:none;" 
-                    data-ad-unit    = "DAN-cJnImzqaxWihWDl7" 
-                    data-ad-width   = "320" 
-                    data-ad-height  = "50">
-                </ins> 
-                <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-            </div>
 
             <div style="text-align:left" >
                 <div class="column"> 
                     {% for result in result_list %}
                     <div class="row"> 
                         <div class="col-2">
-                            <p> {{loop.index}}.</p>
+                            <p style="color:white;"> {{loop.index}}.</p>
                         </div>
                         <div class="col-5">
-                            <p> {{ result['name'] | safe}} </p>
+                            <p style="color:white;"> {{ result['name'] | safe}} </p>
                         </div>
                         <div class="col-3">
-                            <p> {{ (result['score'] / question_len * 100) |round|int}}% </p>
+                            <p style="color:white;"> {{ (result['score'] / question_len * 100) |round|int}}% </p>
                         </div>
                         <div class="col-2">
-                            <p> ({{result['score']}}/{{question_len}}) </p>
+                            <p style="color:white;"> ({{result['score']}}/{{question_len}}) </p>
                         </div>
                 </div>
                             
@@ -53,8 +44,6 @@
 
             <hr>
               
-            <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="return startNew();">나도 문제 내기</button>
-
             <p class="mt-5 mb-3 text-muted">&copy; 2021 I'm back</p>
         </div>
     </body>
